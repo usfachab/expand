@@ -14,24 +14,30 @@
 
 void	*unclosed_quote(char *input)
 {
-	int number_of_single_quotes;
-	int number_of_double_quotes; 
+	int	i;
+	char quote;
 
-	number_of_single_quotes = 0;
-	number_of_double_quotes = 0;
-	
-	while (*input != '\0')
+	i = 0;
+	while (input[i])
 	{
-		if (*input == '\'')
-			number_of_single_quotes++;
-		if (*input == '\"')
-			number_of_double_quotes++;
-		input++;	
+		if (input[i] == '\'' || input[i] == '"')
+		{
+			quote = input[i];
+			i++;
+			while (input[i] != quote || input[i])
+			{
+				if (input[i] == quote)
+					break;
+				else if (!input[i])
+				{
+                    printf("inclosed quote\n");
+                    return (NULL);
+                }
+				i++;
+			}
+		}
+		i++;
 	}
-	if (number_of_single_quotes % 2 == 0 &&
-		number_of_double_quotes % 2 == 0)
-		return ("OK");
-	return (NULL);
 }
 
 t_token *init_token(int type, char *value)
@@ -169,29 +175,8 @@ t_token	*lexer_get_next_token(t_lexer *lexer)
 
 void *lexer(char *input)
 {	
-	t_token	*token;
-	t_lexer	*lexer;
-	 
-	char	**cmd_arg;
 	if (!unclosed_quote(input))
 		return (NULL);
-	lexer = init_lexer(input);
-	while (1)
-	{
-		token = lexer_get_next_token(lexer);
-		if (!token)
-			break;
-		if (token->type == 2)
-		{
-			
-			token = lexer_get_next_token(lexer);
-			if (token->type == 0)
-			{
-				cmd_arg = ft_split(token->content, ' ');
-				
-			}
-		}
-	}
 	return ("OK");
 }
 

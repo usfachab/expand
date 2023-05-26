@@ -23,16 +23,28 @@ t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
-t_list	*ft_lstnew(void *content, int type)
+// t_list	*ft_lstnew(void *content)
+// {
+// 	t_list	*node;
+
+// 	node = NULL;
+// 	node = (t_list *)malloc(sizeof(t_list));
+// 	if (!node)
+// 		return (NULL);
+// 	node->content = content;
+// 	node->next = NULL;
+// 	return (node);
+// }
+
+t_infile	*ft_lstnew_infile(char *file_name)
 {
-	t_list	*node;
+	t_infile	*node;
 
 	node = NULL;
-	node = (t_list *)malloc(sizeof(t_list));
+	node = (t_infile *)malloc(sizeof(t_infile));
 	if (!node)
 		return (NULL);
-	node->content = content;
-	node->type = type;
+	node->infile = file_name;
 	node->next = NULL;
 	return (node);
 }
