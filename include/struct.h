@@ -25,16 +25,16 @@
 // 	struct OUTFILE_STRUCT	*next;
 // }	t_outfile;
 
-typedef struct FILE_STRUCT
+typedef struct INFILE_STRUCT
 {
 	char					*infile;
-	struct FILE_STRUCT		*next;
+	struct INFILE_STRUCT	*next;
 }	t_infile;
 
-typedef struct FILE_STRUCT
+typedef struct OUTFILE_STRUCT
 {
 	char					*outfile;
-	struct FILE_STRUCT		*next;
+	struct OUTFILE_STRUCT	*next;
 }	t_outfile;
 
 typedef struct COMMAND_STRUCT
@@ -44,7 +44,8 @@ typedef struct COMMAND_STRUCT
 
 typedef struct DATA_STRUCT
 {
-	t_file					*files;
+	t_infile				*infile;
+	t_outfile				*outfile;
 	t_cmd_args				*cmd_args;
 	struct DATA_STRUCT		*next;
 }	t_data;

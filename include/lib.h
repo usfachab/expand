@@ -11,6 +11,7 @@
 void	*lexer(char *string);
 t_data	*parser(char *string, char **env);
 void	execution(t_data *data);
+char    *expandEnvVariables(char *command);
 /* ----------------- src folder -------------------*/
 void	find_char_and_replace_with_unprintable(char *str);
 void	find_unprintable_and_replace_with_char(char *str);

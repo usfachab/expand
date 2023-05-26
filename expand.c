@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <mcheck.h>
 
 #define MAX_BUFFER_SIZE 1024
 
@@ -51,22 +52,33 @@ int is_special_character(char ch) {
     return (0);
 }
 
-// int inside_duoble_quote(char *command, char *dollar_sign_position)
-// {
-//     while (*command) 
-// }
+int inside_single_quote(char *cmd, char *start, char *end)
+{
+    if (start != cmd && *(start - 2) == '\'')
+    {
+        if (*(end) == '\'')
+            return 1;
+    }
+    return 0;
+}
 
-// int out_duoble_quote()
-// {
-    
-// }
+int inside_double_quote(char *cmd, char *start, char *end)
+{
+    if (start != cmd && *(start - 2) == '\"')
+    {
+        if (*(end) == '\"')
+            return 1;
+    }
+    return 0;
+}
 
-char *expandEnvVariables(char *command) {
-    char *dollarSign;
-    char *start;
-    char *end;
-    char *variable;
-    char buffer[MAX_BUFFER_SIZE];
+char    *expandEnvVariables(char *command)
+{
+    char    *dollarSign;
+    char    *start;
+    char    *end;
+    char    *variable;
+    char    *buffer;
 
     dollarSign = strchr(command, '$');
     while (dollarSign != NULL) {
@@ -75,36 +87,31 @@ char *expandEnvVariables(char *command) {
         while (!is_special_character(*end))
             end++;
         size_t length = end - start;
+        buffer = malloc(length + 1);
+        if (!buffer)
+            exit(1);
         strncpy(buffer, start, length);
         buffer[length] = '\0';
         variable = get_env_variable(buffer);
-        if (variable != NULL && length > 0) {
+        free(buffer);
+        if ((variable != NULL && length > 0) && (inside_double_quote(command, start, end)
+          || (!inside_double_quote(command, start, end) && !inside_single_quote(command, start, end))))
+        {
             size_t valueLen = strlen(variable);
             char *new_input = malloc((strlen(command) - length + 1) + valueLen);
             if (!new_input)
                 exit(1);
             ft_memmove(new_input, command, dollarSign - command);
             ft_memmove(new_input + (dollarSign - command), variable, valueLen);
-            ft_memmove(new_input + (dollarSign - command) + valueLen, dollarSign + length + 1, strlen(dollarSign + length + 1));
+            ft_memmove(new_input + (dollarSign - command) + valueLen,
+            dollarSign + length + 1, strlen(dollarSign + length + 1));
             free(command);
             command = new_input;//printf("command %s\n", command);
-            dollarSign= strchr(command, '$');
+            dollarSign = strchr(command, '$');
         }
-        dollarSign= strchr(dollarSign + 1, '$');
+        else
+            dollarSign= strchr(dollarSign + 1, '$');
+        
     }
     return (command);
-}
-
-int main() {
-    char *command = malloc(1024);
-    if (!command)
-        exit(1);
-
-    strcpy(command, "echo $HOME 'Hello $USER' \"$HOME.xnnxx\" '$USER' \"$'VAR'\" $USER");
-    printf("Original command: %s\n", command);
-
-    command = expandEnvVariables(command);
-
-    printf("Expanded command: %s\n", command);
-    return 0;
 }

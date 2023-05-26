@@ -22,10 +22,11 @@
 t_data *parser(char *input, char **env)
 {
 	(void)env;
+	(void)input;
 	//t_data	*data;
-	t_lexer *lexer;
+	// t_lexer *lexer;
 
-	lexer  = init_lexer(input);
+	// lexer  = init_lexer(input);
 	
 	return (NULL);
 }

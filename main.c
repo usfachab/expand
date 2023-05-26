@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "include/lib.h"
+#include "include/struct.h"
 
 int exit_status = 0;
 void	execution(t_data *data)
@@ -28,11 +29,14 @@ int main(int argc, char *argv[], char *env[])
 		if (!input)
 			exit(EXIT_FAILURE);
 		add_history(input);
-		if (lexer(input))
-		{
-			t_data	*data = parser(input, env);
-			execution(data);
-		}
+		input = expandEnvVariables(input);
+		printf("input: %s\n", input);
+		// if (lexer(input))
+		// {
+		// 	input = expandEnvVariables(input);
+		// 	//t_data	*data = parser(input, env);
+		// 	//execution(data);
+		// }
 		free(input);
 	}
 	return (0);

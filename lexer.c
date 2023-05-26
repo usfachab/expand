@@ -38,6 +38,7 @@ void	*unclosed_quote(char *input)
 		}
 		i++;
 	}
+	return ("OK");
 }
 
 t_token *init_token(int type, char *value)
